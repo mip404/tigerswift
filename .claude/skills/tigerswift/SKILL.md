@@ -1,7 +1,7 @@
 ---
 name: tigerswift
-description: TigerStyle coding discipline for Swift and macOS/SwiftUI apps. By default, reviews your current/changed Swift and walks you through fixes one finding at a time (issue → fix → Apply/Skip). Also writes new code in the style (write), reports on a file (analyze), and lists violations (check). Optimized for Safety > Performance > Developer Experience.
-argument-hint: "[fix [<file>] | write | analyze <file> | check]"
+description: TigerStyle coding discipline adapted for Swift and macOS/SwiftUI apps. Use when writing new Swift code aligned with TigerStyle, or analyzing existing Swift code to produce a structured report of aligned patterns, violations, and gray areas. Optimized for Safety > Performance > Developer Experience.
+argument-hint: "[analyze <file> | check]"
 ---
 
 # TigerSwift Skill
@@ -33,18 +33,15 @@ errors, compile-without-warnings — and are folded into the rule set rather tha
 
 | Invocation                    | Mode      | Output                                                  |
 |-------------------------------|-----------|---------------------------------------------------------|
-| `/tigerswift`                | **Fix walkthrough (default)** | Review current/changed Swift; walk findings one at a time: issue → fix → Apply/Skip |
-| `/tigerswift fix [<file>]`   | Fix walkthrough | Same, optionally scoped to one file                   |
-| `/tigerswift write`          | Writing   | Apply TigerStyle to all Swift code you write this session |
+| `/tigerswift`                | Writing   | Apply TigerStyle to all Swift code you write this session |
 | `/tigerswift analyze <file>` | Analysis  | Full report: Aligned + Violations + Gray Areas          |
 | `/tigerswift check`          | Quick check | Violations only (brief, one line each)                |
 
 ## Mode Instructions
 
-### Writing Mode (`/tigerswift write`)
+### Writing Mode (`/tigerswift`)
 
-When invoked as `/tigerswift write`, activate TigerSwift for all Swift you write or modify this
-session:
+When invoked without arguments, activate TigerSwift for all Swift you write or modify this session:
 
 1. Read [SAFETY.md](SAFETY.md), [PERFORMANCE.md](PERFORMANCE.md), [DX.md](DX.md),
    [STRUCTURE.md](STRUCTURE.md), and [FORMATTING.md](FORMATTING.md) to load the full rule set.
@@ -77,40 +74,9 @@ When invoked with `check`:
 3. Skip aligned patterns and gray areas — keep it brief.
 4. Format: `SEVERITY | location | rule | issue` (one line per violation).
 
-### Fix Walkthrough — Default Mode (`/tigerswift`, or `/tigerswift fix [<file>]`)
-
-**This is what a bare `/tigerswift` does.** A Socratic walkthrough, in the spirit of a "grill me"
-review: surface findings **one at a time**, each as a single question with a **recommended answer**,
-then **wait** for the user before doing anything. Never batch findings or apply edits without an
-answer.
-
-1. Determine scope: the path in `$ARGUMENTS` if a file is given, else the current/changed `.swift`
-   files.
-   Read [SAFETY.md](SAFETY.md), [PERFORMANCE.md](PERFORMANCE.md), [DX.md](DX.md),
-   [STRUCTURE.md](STRUCTURE.md), and [FORMATTING.md](FORMATTING.md).
-2. Collect the findings and order them by severity: **CRITICAL → MAJOR → MINOR**.
-3. **Answer what you can from the code yourself** — if reading the file (or grepping the project)
-   resolves whether something is actually a violation, do that instead of asking. Only surface the
-   genuine decisions the user must make.
-4. For each remaining finding, in order — present **just that one**:
-   a. **Issue**: `location` — rule name — one line on why it matters (cite the TigerStyle rule).
-   b. **Fix**: a concrete before → after snippet showing exactly what would change.
-   c. Ask **one question** with the question tool and **stop to wait** for the answer. Offer a
-      **recommended** option first (for a CRITICAL finding, "Apply" is recommended), then the rest:
-      **Apply** (make the edit now), **Skip** (leave it, with a note why if the user has a reason),
-      **Modify** (apply a variation the user describes), **Stop** (end the walkthrough).
-   d. Act only on the answer — Apply/Modify → edit the file; Skip → move on; Stop → break out.
-      Then move to the next finding.
-5. After the last finding (or on Stop), print a one-line summary: `N applied, N skipped, N left`,
-   and suggest running `just format` / `just lint` then `/tigerswift check` to verify.
-
-Keep the loop tight: one question, wait, act, next. Don't re-list findings the user already
-resolved, and don't proceed past a question until it's answered.
-
 ## Workflow
 
-`/tigerswift fix` runs this loop interactively, one finding at a time. Otherwise, after analyze or
-check, guide the user through fixing:
+After analyze or check, guide the user through fixing:
 
 1. Fix **CRITICAL** violations first — these are correctness/safety risks.
 2. Fix **MAJOR** violations — these affect maintainability and testability.

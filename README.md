@@ -73,7 +73,9 @@ After it finishes, the `/tigerswift` skill is available in that project.
 
 | Command                        | What it does                                                       |
 |--------------------------------|--------------------------------------------------------------------|
-| `/tigerswift`                 | Apply TigerSwift to all Swift code Claude writes this session     |
+| `/tigerswift`                 | **Default** — reviews your current/changed Swift and walks findings one at a time: shows the issue and a fix, you Apply/Skip |
+| `/tigerswift fix [<file>]`    | Same walkthrough, optionally scoped to one file                    |
+| `/tigerswift write`           | Apply TigerSwift to all Swift code Claude writes this session      |
 | `/tigerswift analyze <file>`  | Produce a full report: aligned patterns, violations, gray areas    |
 | `/tigerswift check`           | List only violations in the current/changed files, by severity     |
 
@@ -81,6 +83,9 @@ Examples:
 
 ```
 /tigerswift
+> walks your current Swift changes, one finding at a time
+
+/tigerswift write
 > Now write the AccountListViewModel for the Accounts feature.
 
 /tigerswift analyze Sources/ViewModels/AccountListViewModel.swift

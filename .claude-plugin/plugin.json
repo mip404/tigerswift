@@ -6,7 +6,6 @@
     "name": "wez",
     "email": "wez@ms.com"
   },
-  "repository": "https://github.com/wez/tigerswift",
   "keywords": [
     "swift",
     "swiftui",

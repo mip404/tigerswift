@@ -9,6 +9,10 @@ argument-hint: "[analyze <file> | check]"
 TigerBeetle's [TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md)
 coding discipline, **pragmatically adapted for Swift and macOS/SwiftUI applications**.
 
+> ⚠️ This is a *quick port* of TigerStyle, not a replacement. The original
+> [TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md) is the
+> source of truth — read it to understand the *why* behind these rules.
+
 Design goals, in priority order: **Safety > Performance > Developer Experience.** All three
 matter; when they conflict, the earlier one wins.
 

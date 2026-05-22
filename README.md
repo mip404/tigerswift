@@ -2,6 +2,12 @@
 
 **TigerStyle coding discipline, adapted for Swift and macOS/SwiftUI apps.**
 
+> ⚠️ **This is a quick port of TigerStyle — an opinionated, pragmatic adaptation, not a
+> replacement.** Please read and understand the original
+> [TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md) first. It is
+> the source of truth and explains the *why* behind every rule here; TigerSwift only translates that
+> thinking into Swift idioms.
+
 TigerSwift is a [Claude Code](https://claude.com/claude-code) plugin that brings
 [TigerBeetle's TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md)
 — a coding philosophy optimized for **Safety > Performance > Developer Experience** — to Swift
@@ -30,15 +36,33 @@ A single skill, `tigerswift`, backed by reference files:
 
 ## Install
 
-TigerSwift is distributed as a Claude Code plugin via a local marketplace.
+TigerSwift is not hosted on a public registry. Install it from a local copy of this folder using
+either method below.
 
-1. Add this repository as a marketplace:
+### Option A — npx (recommended)
+
+Installs the skill into your project's `.claude/skills/tigerswift/`. Run from your project root:
+
+```
+# From a local copy of this folder:
+node /path/to/tigerswift/bin/install.js
+
+# Or, if this package is published to an npm registry:
+npx tigerswift
+```
+
+You can pass a target directory explicitly: `node /path/to/tigerswift/bin/install.js ~/my-app`.
+After it finishes, the `/tigerswift` skill is available in that project. (`npx tigerswift` by bare
+name only resolves once the package is published to an npm registry; otherwise use the local path
+form above.)
+
+### Option B — Claude Code plugin (local marketplace)
+
+1. Add this folder as a marketplace:
 
    ```
    /plugin marketplace add /path/to/tigerswift
    ```
-
-   (Or, once it's on GitHub: `/plugin marketplace add wez/tigerswift`.)
 
 2. Install the plugin:
 

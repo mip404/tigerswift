@@ -1,0 +1,28 @@
+{
+  "name": "tigerswift",
+  "version": "0.1.0",
+  "description": "TigerStyle coding discipline adapted for Swift and macOS/SwiftUI apps — installs the /tigerswift Claude Code skill.",
+  "bin": {
+    "tigerswift": "bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "tigerswift/",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "swift",
+    "swiftui",
+    "macos",
+    "tigerstyle",
+    "tigerbeetle",
+    "claude-code",
+    "style-guide"
+  ],
+  "author": "wez <wez@ms.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.7"
+  }
+}

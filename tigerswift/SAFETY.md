@@ -101,8 +101,41 @@ guard let url = URL(string: rawString) else {
 let url = URL(string: rawString)!
 ```
 
-A force-unwrap is *acceptable* only for a value the compiler can't see but you can prove constant
-(e.g. `URL(string: "https://example.com")!` on a hardcoded literal) — and even then, comment why.
+A force-unwrap or force-cast is *acceptable* only when surrounding code makes it unmistakably safe —
+and then a comment must state the invariant that guarantees it:
+
+```swift
+// Safe: `rawValue` came from a source that only ever emits valid cases.
+return Status(rawValue: rawValue)!
+```
+
+Force-unwraps and `try!`/`as!` are allowed without that comment in **test-only code** (a `nil` simply
+fails the test, which is the desired outcome).
+
+### Implicitly unwrapped optionals: only for UI lifecycle and tests
+
+IUOs (`var x: T!`) are inherently unsafe. The only sanctioned uses are values whose lifetime is tied
+to a UI lifecycle rather than the owner (`@IBOutlet`, properties set in `viewDidLoad`/`prepare`) and
+test fixtures set up in `setUp()`. Don't propagate an IUO through multiple layers of your own
+abstractions — keep its footprint tiny.
+
+### Avoid sentinel values — use `Optional`
+
+A "not found" `-1`, an empty-string-means-absent, or a magic number propagates silently because the
+type system can't tell it apart from a valid value. Use `Optional` for "a value or its absence," and
+a thrown `Error` for failure.
+
+```swift
+// GOOD: absence is a distinct, un-ignorable state.
+func index(of id: UInt128, in accounts: [Account]) -> Int? { ... }
+if let index = index(of: id, in: accounts) { ... } else { ... }
+
+// BAD: -1 is a valid Int; nothing forces the caller to check for it.
+func index(of id: UInt128, in accounts: [Account]) -> Int { ... }  // returns -1 when missing
+```
+
+Test that an optional is present without binding it as a comparison to `nil` (`if value != nil`), not
+`if let _ = value`, which reads as if it unwraps something it then discards.
 
 ## Control Flow
 
@@ -186,7 +219,10 @@ try? await client.createTransfers(batch)
 
 ### Model errors as types
 
-Prefer a typed `enum: Error` over stringly errors, so call sites can switch exhaustively.
+Prefer a typed `enum: Error` over stringly errors, so call sites can switch exhaustively. Use a
+throwing `Error` when there are **multiple distinct failure states**; use `Optional` when there's a
+**single obvious** "value or nothing" outcome (see sentinels, above). Nest the error type in the type
+it belongs to (`Parser.Error`) rather than a free `ParseError`.
 
 ```swift
 enum TransferError: Error {
@@ -195,6 +231,10 @@ enum TransferError: Error {
     case exceedsCredits(available: UInt128)
 }
 ```
+
+`try!` is forbidden in non-test code, with one exception: an expression that could only fail through
+programmer error and is evaluable in isolation — the canonical case being a hardcoded-literal
+`NSRegularExpression(pattern: "a*b+c?")`. If the input is dynamic, handle the error; never `try!` it.
 
 ## Concurrency (Swift 6 / strict concurrency)
 
@@ -257,3 +297,28 @@ var isLoading: Bool
 var value: Value?
 var error: Error?
 ```
+
+## Arithmetic: Trap, Don't Overflow
+
+Use the standard trapping operators (`+`, `-`, `*`, `<<`, `>>`) for normal arithmetic. Trapping on
+overflow is the safe default — it stops bad data from silently propagating through the system,
+exactly as TigerStyle (and Zig) intend. This matters acutely for money: TigerBeetle amounts are
+128-bit and the database itself rejects transfers that would overflow.
+
+```swift
+// GOOD: overflow traps instead of silently wrapping the balance negative.
+let newBalance = oldBalance + profit
+
+// AVOID: &+ wraps on overflow — a balance can silently go backwards.
+let newBalance = oldBalance &+ profit
+```
+
+The masking operators (`&+`, `&-`, `&*`) are correct only in modular-arithmetic domains (hashing,
+crypto, big-integer internals) or proven-safe hot paths — and there they need a comment saying why,
+ideally backed by a debug `assert`.
+
+## Compile Without Warnings
+
+Code compiles cleanly at the strictest warning settings (this includes Swift 6 strict-concurrency
+checking). Any warning the author can reasonably remove must be removed; a lingering warning hides
+the next real one. Deprecation warnings during a migration window are the only routine exception.

@@ -4,8 +4,8 @@
 // Installs the TigerSwift skill into a project's .claude/skills/tigerswift/ directory.
 // Zero dependencies — Node built-ins only.
 //
-// Usage:
-//   npx tigerswift [target-dir]
+// Usage (point at your local copy of this folder):
+//   npx /path/to/tigerswift [target-dir]
 //   node /path/to/tigerswift/bin/install.js [target-dir]
 //
 // target-dir defaults to the current working directory.

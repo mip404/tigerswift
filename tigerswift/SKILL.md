@@ -22,6 +22,13 @@ handling — and translate it into *idiomatic* Swift: `camelCase`, value semanti
 MVVM, `assert`/`precondition`, `Sendable` concurrency, and the realities of SwiftUI. See the
 "Deviations from pure TigerStyle" table below.
 
+Swift formatting and language style additionally follow the
+[Google Swift Style Guide](https://google.github.io/swift/) and
+[Apple's API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/);
+those mechanical rules live in [FORMATTING.md](FORMATTING.md). Several of that guide's rules
+*reinforce* TigerStyle — 100-column limit, trap-on-overflow arithmetic, no sentinel values, typed
+errors, compile-without-warnings — and are folded into the rule set rather than treated as separate.
+
 ## Usage Modes
 
 | Invocation                    | Mode      | Output                                                  |
@@ -36,8 +43,8 @@ MVVM, `assert`/`precondition`, `Sendable` concurrency, and the realities of Swif
 
 When invoked without arguments, activate TigerSwift for all Swift you write or modify this session:
 
-1. Read [SAFETY.md](SAFETY.md), [PERFORMANCE.md](PERFORMANCE.md), [DX.md](DX.md), and
-   [STRUCTURE.md](STRUCTURE.md) to load the full rule set.
+1. Read [SAFETY.md](SAFETY.md), [PERFORMANCE.md](PERFORMANCE.md), [DX.md](DX.md),
+   [STRUCTURE.md](STRUCTURE.md), and [FORMATTING.md](FORMATTING.md) to load the full rule set.
 2. Apply the rules as you write. Assert programmer errors (`assert`/`precondition`), keep functions
    small, handle every error, prefer value types, and follow the project's existing SwiftUI/MVVM
    patterns.
@@ -51,8 +58,8 @@ When invoked without arguments, activate TigerSwift for all Swift you write or m
 When invoked with `analyze` and a path:
 
 1. Read the file specified in `$ARGUMENTS` (the path after `analyze`).
-2. Read [SAFETY.md](SAFETY.md), [PERFORMANCE.md](PERFORMANCE.md), [DX.md](DX.md), and
-   [STRUCTURE.md](STRUCTURE.md) for the complete rule set.
+2. Read [SAFETY.md](SAFETY.md), [PERFORMANCE.md](PERFORMANCE.md), [DX.md](DX.md),
+   [STRUCTURE.md](STRUCTURE.md), and [FORMATTING.md](FORMATTING.md) for the complete rule set.
 3. Produce a structured report following [REPORT_FORMAT.md](REPORT_FORMAT.md).
 4. Check every rule against the file. Be thorough — scan for all violation types, not just the
    obvious ones. Respect Swift idioms: do not flag idiomatic SwiftUI/value-type allocation as a
@@ -85,13 +92,15 @@ After analyze or check, guide the user through fixing:
 | Assertions         | [SAFETY.md](SAFETY.md)         | `assert`/`precondition` for programmer error; no empty `try?`        |
 | Optionals & unwrap | [SAFETY.md](SAFETY.md)         | No force-unwrap/`as!`/implicitly-unwrapped except documented cases  |
 | Control flow       | [SAFETY.md](SAFETY.md)         | `guard` for preconditions; handle every case; bounded recursion     |
-| Error handling     | [SAFETY.md](SAFETY.md)         | `throws`/`Result`/typed errors; never swallow                       |
+| Error handling     | [SAFETY.md](SAFETY.md)         | `throws`/`Result`/typed errors; never swallow; no `try!` (non-test) |
+| Arithmetic         | [SAFETY.md](SAFETY.md)         | Trapping `+ - *` (not `&+`); no sentinel values; use `Optional`     |
 | Concurrency        | [SAFETY.md](SAFETY.md)         | `@MainActor` for UI; `Sendable`; structured `Task`; no data races   |
 | Performance        | [PERFORMANCE.md](PERFORMANCE.md) | Design-time sketches; batching; `reserveCapacity`; COW awareness  |
 | Resources          | [PERFORMANCE.md](PERFORMANCE.md) | network > disk > memory > CPU; keep work off the main thread      |
-| Naming             | [DX.md](DX.md)                 | Swift API Design Guidelines, `camelCase`, clarity at the call site  |
-| Organization       | [DX.md](DX.md)                 | One type per file; `// MARK:`; conformances in extensions           |
-| Formatting         | [DX.md](DX.md)                 | SwiftFormat/SwiftLint; comments are sentences, say *why*            |
+| Naming             | [DX.md](DX.md)                 | API Design Guidelines, `camelCase`, `lowerCamelCase` constants      |
+| Organization       | [DX.md](DX.md)                 | One type per file; `// MARK:`; conformances/nesting in extensions   |
+| Formatting & syntax| [FORMATTING.md](FORMATTING.md) | 100 cols, K&R braces, no `;`, enum/switch/closure layout            |
+| Documentation      | [FORMATTING.md](FORMATTING.md) | `///` summaries + `- Parameters/Returns/Throws` on public API       |
 | Project structure  | [STRUCTURE.md](STRUCTURE.md)   | SPM modules; `@Observable @MainActor` MVVM; protocol services; DI   |
 | macOS specifics    | [STRUCTURE.md](STRUCTURE.md)   | App lifecycle, sandbox/entitlements, AppKit interop, windows/menus  |
 | Pre-submit         | [CHECKLIST.md](CHECKLIST.md)   | Fast validation list                                                |
@@ -103,14 +112,16 @@ Swift's idioms and SwiftUI's runtime make some literal TigerStyle rules counterp
 
 | TigerStyle rule              | Pure (Zig)                    | TigerSwift (Swift/SwiftUI)                                              |
 |------------------------------|-------------------------------|-------------------------------------------------------------------------|
-| Naming case                  | `snake_case` everywhere       | **Swift API Design Guidelines**: `lowerCamelCase` members, `UpperCamelCase` types |
+| Naming case                  | `snake_case` everywhere       | **Swift API Design Guidelines**: `lowerCamelCase` members & constants, `UpperCamelCase` types |
 | Memory                       | Static alloc, no dynamic alloc | Embrace value semantics & ARC; **avoid needless allocations on hot paths**, use `reserveCapacity`, COW awareness |
 | Assertions                   | 2+ per function, always       | Assert **programmer errors** at boundaries with `assert`/`precondition`; quality over a fixed count |
 | Function length              | Hard 70-line cap              | Target **≤ 70 lines**; SwiftUI `body` may exceed when it is flat view composition — extract subviews instead |
-| Line length                  | 100 columns                   | **Follow the project's SwiftFormat config** (commonly 100–120); be consistent |
 | `if` must have `else`        | Always                        | Prefer **`guard` early-exit**; an `if` without `else` is fine when the negative space is a `guard`/return |
 | Recursion                    | Forbidden                     | **Avoid; bound and document** when a tree/parser genuinely needs it     |
 | Zero dependencies            | Only the toolchain            | Minimize deps; prefer first-party Apple frameworks + SPM; justify each  |
+
+The **100-column limit, 4-space indentation, and trap-on-overflow arithmetic carry over unchanged** —
+the Google Swift Style Guide independently lands on the same values, so they are not deviations.
 
 Everything else from TigerStyle carries over directly: limits on everything, total error handling,
 explicitness over compiler magic, "always say why," off-by-one discipline, and putting the important

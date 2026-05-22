@@ -8,7 +8,7 @@
 > the source of truth and explains the *why* behind every rule here; TigerSwift only translates that
 > thinking into Swift idioms.
 
-TigerSwift is a [Claude Code](https://claude.com/claude-code) plugin that brings
+TigerSwift brings
 [TigerBeetle's TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md)
 — a coding philosophy optimized for **Safety > Performance > Developer Experience** — to Swift
 codebases. It helps you *write* new Swift code in the style, and *analyze* existing code for
@@ -39,22 +39,19 @@ A single skill, `tigerswift`, backed by reference files:
 TigerSwift is not hosted on a public registry. Install it from a local copy of this folder using
 either method below.
 
-### Option A — npx (recommended)
+### Option A — installer script (recommended)
 
-Installs the skill into your project's `.claude/skills/tigerswift/`. Run from your project root:
+Copies the skill into your project's `.claude/skills/tigerswift/`. Run from your project root,
+pointing at your local copy of this folder:
 
 ```
-# From a local copy of this folder:
+npx /path/to/tigerswift
+# or equivalently:
 node /path/to/tigerswift/bin/install.js
-
-# Or, if this package is published to an npm registry:
-npx tigerswift
 ```
 
 You can pass a target directory explicitly: `node /path/to/tigerswift/bin/install.js ~/my-app`.
-After it finishes, the `/tigerswift` skill is available in that project. (`npx tigerswift` by bare
-name only resolves once the package is published to an npm registry; otherwise use the local path
-form above.)
+After it finishes, the `/tigerswift` skill is available in that project.
 
 ### Option B — Claude Code plugin (local marketplace)
 
@@ -111,10 +108,6 @@ them literally. The key deviations:
 Everything else — limits on everything, total error handling, explicitness, "always say why,"
 off-by-one discipline — carries over directly. See [`tigerswift/SKILL.md`](tigerswift/SKILL.md)
 for the full table and rationale.
-
-## License
-
-[MIT](LICENSE) © wez
 
 ## Acknowledgements
 

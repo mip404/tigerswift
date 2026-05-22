@@ -4,15 +4,20 @@ Quick validation before committing Swift code.
 
 ## Safety (CRITICAL)
 
-- [ ] **No force-unwrap** (`!`, `as!`, IUO) on values that can be `nil` at runtime
+- [ ] **No force-unwrap** (`!`, `as!`) on runtime-`nil` values; if provably safe, comment the invariant
+- [ ] **No `try!`** in non-test code (except a provably-safe hardcoded literal)
+- [ ] **No IUO** (`var x: T!`) except `@IBOutlet`/UI-lifecycle and test fixtures
+- [ ] **No sentinel values** (`-1`, magic numbers) — use `Optional`
+- [ ] **Trapping arithmetic** (`+ - *`); `&+`/`&-`/`&*` only in modular domains, commented
 - [ ] **Programmer errors asserted** with `precondition`/`assert` at boundaries
 - [ ] **Every error handled** — no empty `try?`, no `catch {}` that swallows
-- [ ] **Errors are typed** (`enum: Error`), switched exhaustively where it matters
+- [ ] **Errors are typed** (`enum: Error`, nested in their type), switched exhaustively
 - [ ] **UI state is `@MainActor`**; no off-main mutation of observed state
 - [ ] **`Sendable` respected** across actor boundaries; `@unchecked` justified
 - [ ] **No retain cycles** — `[weak self]` in escaping closures / long-lived tasks
 - [ ] **Illegal states unrepresentable** — enums over flag/optional soup
 - [ ] **Recursion avoided** or bounded + documented
+- [ ] **Compiles without warnings** at strict settings
 
 ## Control Flow (MAJOR)
 
@@ -39,26 +44,34 @@ Quick validation before committing Swift code.
 
 ## Naming & Organization (MINOR)
 
-- [ ] **Swift API Design Guidelines** — `lowerCamelCase` members, `UpperCamelCase` types
+- [ ] **Swift API Design Guidelines** — `lowerCamelCase` members & constants, `UpperCamelCase` types
+- [ ] **No `k`/`SCREAMING_SNAKE` constants**; static instance props not type-suffixed (`.shared`)
 - [ ] **Clarity at the call site**; no abbreviations (loop index excepted)
 - [ ] **Booleans read as assertions** (`isPending`, `hasHistory`)
-- [ ] **One type per file**; protocol conformances in extensions
+- [ ] **One type per file** (`MyType.swift`, `MyType+Protocol.swift`); conformances in extensions
+- [ ] **Nesting over name prefixes** — `Parser.Error`; caseless `enum` for namespaces
 - [ ] **`// MARK:`** sections present; `// MARK: - Actions` for view-model actions
-- [ ] **`private` by default**; smallest access level that works; `private(set)` for read-wide state
+- [ ] **`private` by default**; no access modifier on the `extension` itself
+- [ ] **Public API documented** with `///` summary + `- Parameters/Returns/Throws`
 
 ## Formatting & Comments (MINOR)
 
 - [ ] **`swiftformat` / `swiftlint` clean** (run `just format` / `just lint`)
-- [ ] **Comments say *why***, are full sentences, and aren't restating code
+- [ ] **100-column limit**, 4-space indent, K&R braces, no semicolons, one statement per line
+- [ ] **Trailing commas** in vertical array/dictionary literals
+- [ ] **Shorthand types** (`[T]`, `[K: V]`, `T?`); read-only computed props omit `get`
+- [ ] **Comments say *why***, are full sentences (`//`, never `/* */`), and aren't restating code
 - [ ] **`let` over `var`**; variables declared close to first use
-- [ ] **Dead code removed**, imports clean
+- [ ] **Dead code removed**, imports clean (whole-module, grouped, ordered)
 
 ## Quick Severity Guide
 
 | If you find...                                          | Severity   |
 |---------------------------------------------------------|------------|
-| Force-unwrap on untrusted data                          | CRITICAL   |
+| Force-unwrap on untrusted data / `try!` in non-test     | CRITICAL   |
 | Swallowed error (`try?` / empty `catch`)                | CRITICAL   |
+| Sentinel value where `Optional` belongs                 | CRITICAL   |
+| Masking arithmetic (`&+`) outside a modular domain      | CRITICAL   |
 | Off-main mutation of UI state / missing `@MainActor`    | CRITICAL   |
 | Data race / `Sendable` violation                        | CRITICAL   |
 | Retain cycle through self in closure/task               | CRITICAL   |
@@ -71,4 +84,5 @@ Quick validation before committing Swift code.
 | `snake_case` / API-guideline naming miss                | MINOR      |
 | Missing `// MARK:` organization                         | MINOR      |
 | Comment restates code / missing "why"                   | MINOR      |
-| Line over the project column limit                      | MINOR      |
+| Line over 100 columns / semicolon / C-style comment     | MINOR      |
+| Public API missing a `///` doc comment                  | MINOR      |

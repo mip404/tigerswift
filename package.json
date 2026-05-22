@@ -8,8 +8,7 @@
   "files": [
     "bin/",
     "tigerswift/",
-    "README.md",
-    "LICENSE"
+    "README.md"
   ],
   "keywords": [
     "swift",
@@ -21,7 +20,6 @@
     "style-guide"
   ],
   "author": "wez <wez@ms.com>",
-  "license": "MIT",
   "engines": {
     "node": ">=16.7"
   }

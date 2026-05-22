@@ -92,14 +92,27 @@ answer.
 3. **Answer what you can from the code yourself** — if reading the file (or grepping the project)
    resolves whether something is actually a violation, do that instead of asking. Only surface the
    genuine decisions the user must make.
-4. For each remaining finding, in order — present **just that one**:
-   a. **Issue**: `location` — rule name — one line on why it matters (cite the TigerStyle rule).
-   b. **Fix**: a concrete before → after snippet showing exactly what would change.
-   c. Ask **one question** with the question tool and **stop to wait** for the answer. Offer a
+4. For each remaining finding, in order — present **just that one**, in this exact shape:
+   a. **Issue**: `file:line` — rule name.
+   b. **Fix as a diff**: show the change in a ` ```diff ` fenced block so removed lines (`-`) render
+      red and added lines (`+`) render green. Include a little surrounding context. For example:
+
+      ```diff
+       func open(_ raw: String) throws -> URL {
+      -    let url = URL(string: raw)!
+      +    guard let url = URL(string: raw) else {
+      +        throw ConfigError.invalidURL(raw)
+      +    }
+           return url
+       }
+      ```
+   c. **Why**: one line tying it to the rule — e.g. *force-unwrap on untrusted input traps at
+      runtime (SAFETY: no force-unwrap on values that can be `nil`).*
+   d. Ask **one question** with the question tool and **stop to wait** for the answer. Offer a
       **recommended** option first (for a CRITICAL finding, "Apply" is recommended), then the rest:
       **Apply** (make the edit now), **Skip** (leave it, with a note why if the user has a reason),
       **Modify** (apply a variation the user describes), **Stop** (end the walkthrough).
-   d. Act only on the answer — Apply/Modify → edit the file; Skip → move on; Stop → break out.
+   e. Act only on the answer — Apply/Modify → edit the file; Skip → move on; Stop → break out.
       Then move to the next finding.
 5. After the last finding (or on Stop), print a one-line summary: `N applied, N skipped, N left`,
    and suggest running `just format` / `just lint` then `/tigerswift check` to verify.

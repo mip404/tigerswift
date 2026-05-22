@@ -1,4 +1,4 @@
-# Tiger-Swift Performance Rules
+# TigerSwift Performance Rules
 
 Performance is the #2 priority (after safety). In Swift the biggest wins come from the same place as
 in Zig — **design** — plus a handful of language-specific traps around value semantics, ARC, and the

@@ -1,4 +1,4 @@
-# Tiger-Swift Safety Rules
+# TigerSwift Safety Rules
 
 Safety is the #1 priority. These rules catch bugs before they ship. The Swift translation of
 TigerStyle's safety philosophy is: **make illegal states unrepresentable with the type system, and
@@ -119,7 +119,7 @@ func post(_ transfer: Transfer) throws {
 }
 ```
 
-This is Tiger-Swift's answer to "every `if` has an `else`": the negative space is handled by a
+This is TigerSwift's answer to "every `if` has an `else`": the negative space is handled by a
 `guard`, so a bare `if` in the body is fine. Every case must still be handled — make `switch`
 exhaustive and avoid `default` when enumerating a closed set, so new cases force a compile error.
 

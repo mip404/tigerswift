@@ -1,10 +1,10 @@
 ---
-name: tiger-swift
+name: tigerswift
 description: TigerStyle coding discipline adapted for Swift and macOS/SwiftUI apps. Use when writing new Swift code aligned with TigerStyle, or analyzing existing Swift code to produce a structured report of aligned patterns, violations, and gray areas. Optimized for Safety > Performance > Developer Experience.
 argument-hint: "[analyze <file> | check]"
 ---
 
-# Tiger-Swift Skill
+# TigerSwift Skill
 
 TigerBeetle's [TigerStyle](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md)
 coding discipline, **pragmatically adapted for Swift and macOS/SwiftUI applications**.
@@ -22,15 +22,15 @@ MVVM, `assert`/`precondition`, `Sendable` concurrency, and the realities of Swif
 
 | Invocation                    | Mode      | Output                                                  |
 |-------------------------------|-----------|---------------------------------------------------------|
-| `/tiger-swift`                | Writing   | Apply TigerStyle to all Swift code you write this session |
-| `/tiger-swift analyze <file>` | Analysis  | Full report: Aligned + Violations + Gray Areas          |
-| `/tiger-swift check`          | Quick check | Violations only (brief, one line each)                |
+| `/tigerswift`                | Writing   | Apply TigerStyle to all Swift code you write this session |
+| `/tigerswift analyze <file>` | Analysis  | Full report: Aligned + Violations + Gray Areas          |
+| `/tigerswift check`          | Quick check | Violations only (brief, one line each)                |
 
 ## Mode Instructions
 
-### Writing Mode (`/tiger-swift`)
+### Writing Mode (`/tigerswift`)
 
-When invoked without arguments, activate Tiger-Swift for all Swift you write or modify this session:
+When invoked without arguments, activate TigerSwift for all Swift you write or modify this session:
 
 1. Read [SAFETY.md](SAFETY.md), [PERFORMANCE.md](PERFORMANCE.md), [DX.md](DX.md), and
    [STRUCTURE.md](STRUCTURE.md) to load the full rule set.
@@ -42,7 +42,7 @@ When invoked without arguments, activate Tiger-Swift for all Swift you write or 
    the idiomatic Swift choice conflicts with a TigerStyle rule), flag it to the user with your
    reasoning rather than silently picking one.
 
-### Analyze Mode (`/tiger-swift analyze <file>`)
+### Analyze Mode (`/tigerswift analyze <file>`)
 
 When invoked with `analyze` and a path:
 
@@ -54,7 +54,7 @@ When invoked with `analyze` and a path:
    obvious ones. Respect Swift idioms: do not flag idiomatic SwiftUI/value-type allocation as a
    safety violation; that is the whole point of the pragmatic adaptation.
 
-### Check Mode (`/tiger-swift check`)
+### Check Mode (`/tigerswift check`)
 
 When invoked with `check`:
 
@@ -70,7 +70,7 @@ After analyze or check, guide the user through fixing:
 1. Fix **CRITICAL** violations first — these are correctness/safety risks.
 2. Fix **MAJOR** violations — these affect maintainability and testability.
 3. **MINOR** violations are worth fixing but should not block progress.
-4. Run `/tiger-swift check` to verify.
+4. Run `/tigerswift check` to verify.
 5. Repeat until clean. Then run the project's `just lint` / `just format` (or `swiftlint` /
    `swiftformat`) so machine-checkable style is enforced by tooling, not by hand.
 
@@ -97,7 +97,7 @@ After analyze or check, guide the user through fixing:
 
 Swift's idioms and SwiftUI's runtime make some literal TigerStyle rules counterproductive. We adapt:
 
-| TigerStyle rule              | Pure (Zig)                    | Tiger-Swift (Swift/SwiftUI)                                              |
+| TigerStyle rule              | Pure (Zig)                    | TigerSwift (Swift/SwiftUI)                                              |
 |------------------------------|-------------------------------|-------------------------------------------------------------------------|
 | Naming case                  | `snake_case` everywhere       | **Swift API Design Guidelines**: `lowerCamelCase` members, `UpperCamelCase` types |
 | Memory                       | Static alloc, no dynamic alloc | Embrace value semantics & ARC; **avoid needless allocations on hot paths**, use `reserveCapacity`, COW awareness |

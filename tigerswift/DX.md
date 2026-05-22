@@ -1,4 +1,4 @@
-# Tiger-Swift Developer Experience Rules
+# TigerSwift Developer Experience Rules
 
 DX is the #3 priority (after safety and performance). TigerStyle's naming and clarity discipline
 maps cleanly onto Swift — with one big substitution: **Swift uses `camelCase`, following the

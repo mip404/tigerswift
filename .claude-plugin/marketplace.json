@@ -1,5 +1,5 @@
 {
-  "name": "tiger-swift",
+  "name": "tigerswift",
   "owner": {
     "name": "wez",
     "email": "wez@ms.com"
@@ -9,7 +9,7 @@
   },
   "plugins": [
     {
-      "name": "tiger-swift",
+      "name": "tigerswift",
       "source": "./",
       "description": "TigerStyle coding discipline adapted for Swift and macOS/SwiftUI apps — safety, performance, and developer experience."
     }

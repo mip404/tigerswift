@@ -1,9 +1,9 @@
 # Analysis Report Format
 
-When running `/tiger-swift analyze <file>`, produce this structure:
+When running `/tigerswift analyze <file>`, produce this structure:
 
 ```markdown
-## Tiger-Swift Analysis Report
+## TigerSwift Analysis Report
 
 **File**: `<filename>`
 **Date**: <date>

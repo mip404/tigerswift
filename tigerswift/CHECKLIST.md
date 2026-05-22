@@ -1,4 +1,4 @@
-# Tiger-Swift Pre-Submit Checklist
+# TigerSwift Pre-Submit Checklist
 
 Quick validation before committing Swift code.
 

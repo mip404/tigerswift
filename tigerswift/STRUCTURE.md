@@ -1,4 +1,4 @@
-# Tiger-Swift Project Structure & macOS Conventions
+# TigerSwift Project Structure & macOS Conventions
 
 How to organize a Swift macOS/SwiftUI application so it stays safe, testable, and easy to navigate.
 This is the structural complement to the SAFETY/PERFORMANCE/DX rules, distilled from modern modular

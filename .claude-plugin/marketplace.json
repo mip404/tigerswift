@@ -1,0 +1,17 @@
+{
+  "name": "tiger-swift",
+  "owner": {
+    "name": "wez",
+    "email": "wez@ms.com"
+  },
+  "metadata": {
+    "description": "TigerStyle coding discipline for Swift and macOS/SwiftUI projects"
+  },
+  "plugins": [
+    {
+      "name": "tiger-swift",
+      "source": "./",
+      "description": "TigerStyle coding discipline adapted for Swift and macOS/SwiftUI apps — safety, performance, and developer experience."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "tiger-swift",
+  "description": "TigerStyle coding discipline adapted for Swift and macOS/SwiftUI apps — safety, performance, and developer experience.",
+  "version": "0.1.0",
+  "author": {
+    "name": "wez",
+    "email": "wez@ms.com"
+  },
+  "repository": "https://github.com/wez/tiger-swift",
+  "keywords": [
+    "swift",
+    "swiftui",
+    "macos",
+    "tigerstyle",
+    "tigerbeetle",
+    "style-guide",
+    "safety",
+    "mvvm"
+  ],
+  "skills": "./"
+}

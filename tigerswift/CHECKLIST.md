@@ -47,6 +47,7 @@ Quick validation before committing Swift code.
 - [ ] **Swift API Design Guidelines** — `lowerCamelCase` members & constants, `UpperCamelCase` types
 - [ ] **No `k`/`SCREAMING_SNAKE` constants**; static instance props not type-suffixed (`.shared`)
 - [ ] **Clarity at the call site**; no abbreviations (loop index excepted)
+- [ ] **No project/product name in its own code or comments** (name by domain role, not the app)
 - [ ] **Booleans read as assertions** (`isPending`, `hasHistory`)
 - [ ] **One type per file** (`MyType.swift`, `MyType+Protocol.swift`); conformances in extensions
 - [ ] **Nesting over name prefixes** — `Parser.Error`; caseless `enum` for namespaces
@@ -60,6 +61,7 @@ Quick validation before committing Swift code.
 - [ ] **100-column limit**, 4-space indent, K&R braces, no semicolons, one statement per line
 - [ ] **Trailing commas** in vertical array/dictionary literals
 - [ ] **Shorthand types** (`[T]`, `[K: V]`, `T?`); read-only computed props omit `get`
+- [ ] **Comments are lean** — only for complex/non-obvious logic or where code can't convey intent
 - [ ] **Comments say *why***, are full sentences (`//`, never `/* */`), and aren't restating code
 - [ ] **`let` over `var`**; variables declared close to first use
 - [ ] **Dead code removed**, imports clean (whole-module, grouped, ordered)

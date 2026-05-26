@@ -70,6 +70,25 @@ unit and removes the question entirely.
 - **Naming is not access control.** Hide implementation with `private`/`fileprivate`/`internal`, not
   with underscore prefixes or other conventions.
 
+### Don't name the project in its own code
+
+Inside a codebase the reader already knows which product they're in, so referencing its name —
+"Acme's last commit", "the Acme echo" — is redundant noise, and it silently goes stale on a rename.
+Name things by their *domain role*, not by the app. This applies to comments and identifiers alike.
+
+```swift
+// GOOD: domain role; survives a rename, reads clearly.
+/// True while HEAD still equals the SHA our last auto-commit created.
+func currentHeadMatchesSelfEcho() async -> Bool { ... }
+
+// BAD: names the product inside the product.
+/// True when current HEAD still equals the SHA Acme's last commit created.
+func currentHeadMatchesSelfEcho() async -> Bool { ... }
+```
+
+The product name belongs at the edges — bundle identifiers, user-facing strings, marketing — not
+woven through the implementation.
+
 ## Organization
 
 ### One type per file
@@ -135,20 +154,27 @@ limit**, 4-space indentation, K&R braces, no semicolons, one statement per line,
 vertical literals. Don't hand-format what `swiftformat` / `swiftlint` enforce — match the project's
 `.swiftformat` / `.swiftlint.yml` and run `just format` / `just lint` before finishing.
 
-### Comments are sentences that say *why*
+### Comments are lean and say *why*
 
-Code says *what*; comments say *why*. Full sentences, capitalized, with a period. Delete comments
-that restate the code.
+A comment must earn its place. Write one only when **(a)** the logic is genuinely complex or
+non-obvious, or **(b)** the code cannot convey its own intent — and then explain *why*, never *what*.
+If a clearer name or a smaller function removes the need for the comment, do that instead. Default to
+no comment; the code is the first documentation. When you do comment, use full sentences, capitalized,
+with a period.
 
 ```swift
-// GOOD: explains a non-obvious decision.
+// GOOD: explains a non-obvious decision the code can't show on its own.
 // The client serializes to one in-flight request per session, so we batch aggressively
 // here rather than awaiting each transfer.
 let results = try await client.createTransfers(transfers)
 
-// BAD: restates the obvious.
+// BAD: restates what the code plainly says — delete it.
 // create the transfers
 let results = try await client.createTransfers(transfers)
+
+// BAD: a doc-comment narrating the body. Let the code (and a good name) speak.
+/// Returns true when the array is empty.
+func isEmpty() -> Bool { items.isEmpty }
 ```
 
 Keep `// MARK:`, `// TODO:` (only with a tracked issue), and `// swiftlint:disable` (only with a

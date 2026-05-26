@@ -144,8 +144,9 @@ check, guide the user through fixing:
 | Concurrency        | [SAFETY.md](SAFETY.md)         | `@MainActor` for UI; `Sendable`; structured `Task`; no data races   |
 | Performance        | [PERFORMANCE.md](PERFORMANCE.md) | Design-time sketches; batching; `reserveCapacity`; COW awareness  |
 | Resources          | [PERFORMANCE.md](PERFORMANCE.md) | network > disk > memory > CPU; keep work off the main thread      |
-| Naming             | [DX.md](DX.md)                 | API Design Guidelines, `camelCase`, `lowerCamelCase` constants      |
+| Naming             | [DX.md](DX.md)                 | API Design Guidelines, `camelCase`; name by domain role, not the app|
 | Organization       | [DX.md](DX.md)                 | One type per file; `// MARK:`; conformances/nesting in extensions   |
+| Comments           | [DX.md](DX.md)                 | Lean — only for complex/non-obvious code; say *why*, never *what*   |
 | Formatting & syntax| [FORMATTING.md](FORMATTING.md) | 100 cols, K&R braces, no `;`, enum/switch/closure layout            |
 | Documentation      | [FORMATTING.md](FORMATTING.md) | `///` summaries + `- Parameters/Returns/Throws` on public API       |
 | Project structure  | [STRUCTURE.md](STRUCTURE.md)   | SPM modules; `@Observable @MainActor` MVVM; protocol services; DI   |
